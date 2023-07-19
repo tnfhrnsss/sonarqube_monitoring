@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+monitoring:
+  sonarqube:
+    api.url:
+    component.keys:
+  slack:
+    token:
+    channel-name:
+
+logging:
+  level:
+    com.lzdk.monitoring: debug
