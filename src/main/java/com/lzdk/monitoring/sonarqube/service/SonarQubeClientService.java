@@ -26,10 +26,12 @@ public class SonarQubeClientService {
             return SearchResultRdo.EMPTY();
         }
 
-        return sonarQubeClient.search(SearchQuery.builder()
-            .componentKeys(componentKeys)
-            .facets(Arrays.asList("severities", "types"))
-            .build());
+        return sonarQubeClient.search(
+            SearchQuery.builder()
+                .componentKeys(componentKeys)
+                .facets(Arrays.asList("severities", "types"))
+                .build()
+        );
     }
 
     private boolean validate() {

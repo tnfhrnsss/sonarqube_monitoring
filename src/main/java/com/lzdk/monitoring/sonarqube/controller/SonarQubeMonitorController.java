@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public class SonarQubeMonitorController {
     private final SonarQubeMonitorFlowService sonarQubeMonitorFlowService;
 
-    @PostMapping("codesmells/alert")
+    @PostMapping("codesmell/alert")
     public Mono<Void> alert() {
         return Mono.fromRunnable(() -> sonarQubeMonitorFlowService.alert());
     }

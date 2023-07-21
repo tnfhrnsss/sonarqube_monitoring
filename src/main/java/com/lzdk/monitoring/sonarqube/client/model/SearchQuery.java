@@ -15,17 +15,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SearchQuery implements JsonSerializable {
-    //?componentKeys=core-asset-espresso&s=FILE_LINE&resolved=false&types=CODE_SMELL
-    // &ps=100&facets=severities%2Ctypes&timeZone=Asia%2FSeoul
-
     @Builder.Default
     private List<String> componentKeys = Collections.emptyList();
 
+    @Builder.Default
     private String s = "FILE_LINE";
 
+    @Builder.Default
     private boolean resolved = false;
 
+    @Builder.Default
     private String types = "CODE_SMELL";
 
+    @Builder.Default
     private List<String> facets = Collections.emptyList();
 }

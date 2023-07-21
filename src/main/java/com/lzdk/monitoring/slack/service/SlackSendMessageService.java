@@ -1,11 +1,7 @@
 package com.lzdk.monitoring.slack.service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
-import com.lzdk.monitoring.slack.user.service.SlackUserProfileService;
-import com.lzdk.monitoring.slack.user.service.SlackUserService;
 import com.lzdk.monitoring.slack.utils.SlackApiConfig;
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
@@ -17,12 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SlackSendMessageService {
-    private final SlackConversationService slackConversationService;
-
-    private final SlackUserService slackUserService;
-
-    private final SlackUserProfileService slackUserProfileService;
-
     static void publishMessage(String channelId, String message) {
         var client = Slack.getInstance().methods();
         try {
@@ -37,30 +27,7 @@ public class SlackSendMessageService {
         }
     }
 
-    public void send(Map targets) {
-        String channelId = slackConversationService.find();
-
-        // 1. 해당 채널 id에 연결된 user리스트 가져오고, 캐시에 저장한 후
-
-        List<String> users = slackUserService.findAll(channelId);
-
-
-        // 2. user리스트들의 이메일 주소를 또 가져오고
-
-        Map<String, String> members = slackUserProfileService.findAll(users);
-
-        targets.forEach((k, v) -> {
-            members.entrySet().forEach(a -> {
-                if (a.getValue().equals(k)) {
-                    publishMessage(a.getKey(), v.toString());
-                } else {
-
-                }
-            });
-        });
-
-        // 3. 매칭 시킨다. 타켓에 있는지. 없으면, 따로 모아서 전체 공지하고...
-
-        //publishMessage(users.get(0), message);
+    public void send(String targetId, String message) {
+        publishMessage(targetId, message);
     }
 }

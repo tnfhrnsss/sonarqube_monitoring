@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.lzdk.monitoring.slack.utils.SlackApiConfig;
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.model.Conversation;
@@ -19,13 +20,6 @@ public class SlackConversationService {
 
     private static String channelName;
 
-    private static String token = "";
-
-    @Value("${monitoring.slack.token:}")
-    public void setToken(String value) {
-        token = value;
-    }
-
     @Value("${monitoring.slack.channel-name:}")
     public void setChannelName(String value) {
         channelName = value;
@@ -35,7 +29,7 @@ public class SlackConversationService {
         var client = Slack.getInstance().methods();
         var conversationId = "";
         try {
-            var result = client.conversationsList(r -> r.token(token));
+            var result = client.conversationsList(r -> r.token(SlackApiConfig.getToken()));
             for (Conversation channel : result.getChannels()) {
                 if (channel.getName().equals(channelName)) {
                     conversationId = channel.getId();

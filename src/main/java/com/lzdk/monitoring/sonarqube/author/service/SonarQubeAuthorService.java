@@ -20,10 +20,9 @@ public class SonarQubeAuthorService {
 
     public Map findAll() {
         return targets;
-        /*System.out.println("===============");
-        System.out.println(targets.size());
-        targets.forEach((a, b) -> {
-            System.out.println(a.toString() + "---"+ b.toString());
-        });*/
+    }
+
+    public void remove() {
+        targets.clear();
     }
 }
