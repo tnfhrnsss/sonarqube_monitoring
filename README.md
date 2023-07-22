@@ -29,7 +29,11 @@ It is an application that sends notifications to Slack when a code smell occurs 
     ```
 
 ## output snapshot
+![slack_notification](https://tnfhrnsss.github.io/docs/sub-projects/img/sonarqube_codesmell_slack_notification.png)
 
-### Reference Documentation
+### blog reference
 
 For further reference, please consider the following sections:
+
+* [blog](https://tnfhrnsss.github.io/docs/sub-projects/sonarqube_codesmell_slack_notification/)
+
