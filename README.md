@@ -1,4 +1,4 @@
-# sonarqube_monitoring
+# When SonarQube Detects Code Smells, Send Slack DM to code author
 
 It is an application that sends notifications to Slack when a code smell occurs in SonarQube.
 
@@ -11,11 +11,10 @@ It is an application that sends notifications to Slack when a code smell occurs 
 # Usage
 
 * You can configure the sonarqube api url and Slack details in the application.yml file.
-    * ```
+   ```
     monitoring:
       sonarqube:
         api.url: http://127.0.0.1:9100/api
-  
       slack:
         token: xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
         channel-name: developer
@@ -25,7 +24,7 @@ It is an application that sends notifications to Slack when a code smell occurs 
     * [OR] java -jar sonarqube_monitoring*.jar
 
 * execute api
-    * ```
+    ```
       curl -X POST 'http://localhost:8080/sonarqube/codesmell/alert'
     ```
 
