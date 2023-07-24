@@ -16,13 +16,20 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class SlackConversationService {
-    private static final Map<String, String> channelList = new ConcurrentHashMap<>();
+    private static String channelId;
 
     private static String channelName;
 
-    @Value("${monitoring.slack.channel-name:}")
+    private static final Map<String, String> channelList = new ConcurrentHashMap<>();
+
+    @Value("${monitoring.slack.channel.name:}")
     public void setChannelName(String value) {
         channelName = value;
+    }
+
+    @Value("${monitoring.slack.channel.id:}")
+    public void setChannelId(String value) {
+        channelId = value;
     }
 
     static String findConversationId() {
@@ -48,6 +55,10 @@ public class SlackConversationService {
     }
 
     public String find() {
+        if (StringUtils.isNotEmpty(channelId)) {
+            return channelId;
+        }
+
         if (channelList.containsKey(channelName)) {
             return channelList.get(channelName);
         }

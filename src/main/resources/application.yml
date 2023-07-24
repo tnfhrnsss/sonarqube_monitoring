@@ -13,7 +13,9 @@ monitoring:
     component.keys:
   slack:
     token:
-    channel-name:
+    channel:
+      id:
+      name:
 
 logging:
   level:
