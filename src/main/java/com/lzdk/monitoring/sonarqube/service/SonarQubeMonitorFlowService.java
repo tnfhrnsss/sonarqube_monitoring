@@ -47,7 +47,7 @@ public class SonarQubeMonitorFlowService {
             if (profile.getValue().equals(k)) {
                 slackSendMessageService.send(profile.getKey(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
             } else {
-                log.debug("Author not found in the Slack channel. : ", v.toString());
+                log.debug("Author not found in the Slack channel. : {} ", v.toString());
             }
         }));
     }

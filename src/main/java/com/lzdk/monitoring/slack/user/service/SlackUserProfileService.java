@@ -29,9 +29,7 @@ public class SlackUserProfileService {
                 var result =  client.usersProfileGet(r ->
                     r.token(SlackApiConfig.getToken()).user(user.trim())
                 );
-
                 profiles.put(user, result.getProfile().getEmail());
-                System.out.println(result.getProfile().getEmail());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
