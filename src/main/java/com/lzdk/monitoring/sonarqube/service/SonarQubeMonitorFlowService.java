@@ -45,11 +45,10 @@ public class SonarQubeMonitorFlowService {
 
         targets.forEach((k, v) -> slackUserProfiles.entrySet().forEach(profile -> {
             if (profile.getValue().equals(k)) {
-                slackSendMessageService.send(profile.getKey(), v.toString());
+                slackSendMessageService.send(profile.getKey(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
             } else {
                 log.debug("Author not found in the Slack channel. : ", v.toString());
             }
-            slackSendMessageService.send(profile.getKey(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
         }));
     }
 
