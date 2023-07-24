@@ -2,7 +2,7 @@ package com.lzdk.monitoring.sonarqube.service;
 
 import java.util.Map;
 
-import com.lzdk.monitoring.slack.service.SlackSendMessageService;
+import com.lzdk.monitoring.slack.message.service.SlackSendMessageService;
 import com.lzdk.monitoring.slack.user.service.SlackUserProfileService;
 import com.lzdk.monitoring.sonarqube.author.service.SonarQubeAuthorService;
 import com.lzdk.monitoring.sonarqube.client.model.SearchResultRdo;

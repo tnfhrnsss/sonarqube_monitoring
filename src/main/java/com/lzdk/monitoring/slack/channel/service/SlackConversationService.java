@@ -1,4 +1,4 @@
-package com.lzdk.monitoring.slack.service;
+package com.lzdk.monitoring.slack.channel.service;
 
 import java.io.IOException;
 import java.util.Map;

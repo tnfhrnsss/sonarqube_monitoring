@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.lzdk.monitoring.slack.service.SlackConversationService;
+import com.lzdk.monitoring.slack.channel.service.SlackConversationService;
 import com.lzdk.monitoring.slack.utils.SlackApiConfig;
 import com.slack.api.Slack;
 import lombok.RequiredArgsConstructor;
