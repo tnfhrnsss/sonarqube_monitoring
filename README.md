@@ -11,13 +11,16 @@ It is an application that sends notifications to Slack when a code smell occurs 
 # Usage
 
 * You can configure the sonarqube api url and Slack details in the application.yml file.
+* You only need to set either the Channel ID or the Channel Name.
    ```
     monitoring:
       sonarqube:
         api.url: http://127.0.0.1:9100/api
       slack:
         token: xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        channel-name: developer
+        channel:
+          id:
+          name:
     ```
 * run application
     * build this project and run SonarqubeMonitoringApplication.class
