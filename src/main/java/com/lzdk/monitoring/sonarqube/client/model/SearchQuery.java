@@ -19,6 +19,9 @@ public class SearchQuery implements JsonSerializable {
     private List<String> componentKeys = Collections.emptyList();
 
     @Builder.Default
+    private int p = 1;
+
+    @Builder.Default
     private String s = "FILE_LINE";
 
     @Builder.Default

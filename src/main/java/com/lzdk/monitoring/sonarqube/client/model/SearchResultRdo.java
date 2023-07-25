@@ -1,7 +1,6 @@
 package com.lzdk.monitoring.sonarqube.client.model;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lzdk.monitoring.utils.json.JsonSerializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,10 +17,16 @@ public class SearchResultRdo implements JsonSerializable {
 
     private int ps;
 
-    private List<Issue> issues;
+    private IssueList issues;
 
+    @JsonIgnore
     public static SearchResultRdo EMPTY() {
         return new SearchResultRdo();
+    }
+
+    @JsonIgnore
+    public int maxPage() {
+        return Math.min((this.total + 99) / 100, this.p);
     }
 
     @Override

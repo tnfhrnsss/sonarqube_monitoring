@@ -26,9 +26,18 @@ public class SonarQubeClientService {
             return SearchResultRdo.EMPTY();
         }
 
+        SearchResultRdo rdo = search(1);
+        for (int i=1; i < rdo.maxPage(); i++) {
+            rdo.getIssues().addAll(search(i).getIssues());
+        }
+        return rdo;
+    }
+
+    private SearchResultRdo search(int page) {
         return sonarQubeClient.search(
             SearchQuery.builder()
                 .componentKeys(componentKeys)
+                .p(page)
                 .facets(Arrays.asList("severities", "types"))
                 .build()
         );
