@@ -9,12 +9,13 @@ import com.lzdk.monitoring.slack.utils.SlackApiConfig;
 import com.slack.api.Slack;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SlackUserProfileService {
+public class SlackUserInfoService {
     private static final Map<String, String> profiles = new ConcurrentHashMap<>();
 
     private final SlackConversationService slackConversationService;
@@ -26,11 +27,17 @@ public class SlackUserProfileService {
 
         members.forEach(user -> {
             try {
-                var result =  client.usersProfileGet(r ->
+                var result =  client.usersInfo(r ->
                     r.token(SlackApiConfig.getToken()).user(user.trim())
                 );
-                profiles.put(user, result.getProfile().getEmail());
+
+                String email = result.getUser().getProfile().getEmail();
+                if (StringUtils.isNotEmpty(email)) {
+                    profiles.put(email, user);
+                }
+
             } catch (Exception e) {
+                log.error(e.getMessage());
                 throw new RuntimeException(e);
             }
         });

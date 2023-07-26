@@ -3,7 +3,7 @@ package com.lzdk.monitoring.sonarqube.service;
 import java.util.Map;
 
 import com.lzdk.monitoring.slack.message.service.SlackSendMessageService;
-import com.lzdk.monitoring.slack.user.service.SlackUserProfileService;
+import com.lzdk.monitoring.slack.user.service.SlackUserInfoService;
 import com.lzdk.monitoring.sonarqube.author.service.SonarQubeAuthorService;
 import com.lzdk.monitoring.sonarqube.client.model.SearchResultRdo;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class SonarQubeMonitorFlowService {
 
     private final SonarQubeAuthorService sonarQubeAuthorService;
 
-    private final SlackUserProfileService slackUserProfileService;
+    private final SlackUserInfoService slackUserInfoService;
 
     public void alert() {
         try {
@@ -40,16 +40,16 @@ public class SonarQubeMonitorFlowService {
     }
 
     private void sendMessage() {
-        Map targets = sonarQubeAuthorService.findAll();
-        Map<String, String> slackUserProfiles = slackUserProfileService.findAll();
+        Map<String, String> targets = sonarQubeAuthorService.findAll();
+        Map<String, String> slackUserProfiles = slackUserInfoService.findAll();
 
-        targets.forEach((k, v) -> slackUserProfiles.entrySet().forEach(profile -> {
-            if (profile.getValue().equals(k)) {
-                slackSendMessageService.send(profile.getKey(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
+        targets.forEach((k, v) -> {
+            if (slackUserProfiles.containsKey(k)) {
+                slackSendMessageService.send(slackUserProfiles.get(k).toString(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
             } else {
                 log.debug("Author not found in the Slack channel. : {} ", v.toString());
             }
-        }));
+        });
     }
 
     private void destroy() {
