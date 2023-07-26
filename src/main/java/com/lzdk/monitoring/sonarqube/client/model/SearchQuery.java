@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SearchQuery implements JsonSerializable {
     @Builder.Default
-    private List<String> componentKeys = Collections.emptyList();
+    private String componentKeys = null;
 
     @Builder.Default
     private int p = 1;
