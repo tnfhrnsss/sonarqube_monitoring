@@ -1,6 +1,7 @@
 package com.lzdk.monitoring.sonarqube.service;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.lzdk.monitoring.slack.message.service.SlackSendMessageService;
 import com.lzdk.monitoring.slack.user.service.SlackUserInfoService;
@@ -40,16 +41,19 @@ public class SonarQubeMonitorFlowService {
     }
 
     private void sendMessage() {
-        Map<String, String> targets = sonarQubeAuthorService.findAll();
+        Map<String, ConcurrentHashMap.KeySetView> targets = sonarQubeAuthorService.findAll();
         Map<String, String> slackUserProfiles = slackUserInfoService.findAll();
 
-        targets.forEach((k, v) -> {
+        try {
+            targets.forEach((k, v) -> {
             if (slackUserProfiles.containsKey(k)) {
-                slackSendMessageService.send(slackUserProfiles.get(k).toString(), "Code smells have been detected in SonarQube. Please fix them. component : " + v.toString());
+                slackSendMessageService.send(slackUserProfiles.get(k).toString(), v.getMap().keySet());
             } else {
-                log.debug("Author not found in the Slack channel. : {} ", v.toString());
-            }
-        });
+                slackSendMessageService.sendToAdmin(v.getMap().keySet());
+            }});
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
     private void destroy() {
