@@ -21,7 +21,13 @@ It is an application that sends notifications to Slack when a code smell occurs 
         channel:
           id:
           name:
+        admin.id:
     ```
+* When a matching user does not exist in the Slack channel, it can be configured to send a direct message to the admin.
+  ```
+    admin.id: "@admin"
+  ```
+
 * run application
     * build this project and run SonarqubeMonitoringApplication.class
     * [OR] java -jar sonarqube_monitoring*.jar
