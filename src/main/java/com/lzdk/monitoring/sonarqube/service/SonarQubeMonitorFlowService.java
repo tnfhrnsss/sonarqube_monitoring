@@ -9,6 +9,7 @@ import com.lzdk.monitoring.sonarqube.author.service.SonarQubeAuthorService;
 import com.lzdk.monitoring.sonarqube.client.model.SearchResultRdo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -23,6 +24,7 @@ public class SonarQubeMonitorFlowService {
 
     private final SlackUserInfoService slackUserInfoService;
 
+    @Async("taskExecutor")
     public void alert() {
         try {
             findIssue();

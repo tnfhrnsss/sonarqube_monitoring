@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
@@ -16,7 +15,7 @@ public class SonarQubeMonitorController {
     private final SonarQubeMonitorFlowService sonarQubeMonitorFlowService;
 
     @PostMapping("codesmell/alert")
-    public Mono<Void> alert() {
-        return Mono.fromRunnable(() -> sonarQubeMonitorFlowService.alert());
+    public void alert() {
+        sonarQubeMonitorFlowService.alert();
     }
 }
