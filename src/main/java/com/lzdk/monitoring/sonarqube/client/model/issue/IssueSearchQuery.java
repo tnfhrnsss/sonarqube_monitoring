@@ -1,4 +1,4 @@
-package com.lzdk.monitoring.sonarqube.client.model;
+package com.lzdk.monitoring.sonarqube.client.model.issue;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
-public class SearchQuery implements JsonSerializable {
+public class IssueSearchQuery implements JsonSerializable {
     @Builder.Default
     private String componentKeys = null;
 

@@ -18,7 +18,7 @@ public class SlackSendMessageService {
     @Value("${monitoring.slack.admin.id:}")
     private String adminId;
 
-    private static final String PUSH_MESSAGE = "Code smells have been detected in SonarQube. Please fix them. component : ";
+    private static final String PUSH_MESSAGE = "Code smells or Hotspots have been detected in SonarQube. Please fix them. component : ";
 
     static void publishMessage(String channelId, String message) {
         var client = Slack.getInstance().methods();

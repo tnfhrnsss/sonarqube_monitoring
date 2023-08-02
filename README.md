@@ -1,6 +1,6 @@
-# When SonarQube Detects Code Smells, Send Slack DM to code author
+# When SonarQube Detects Code Smells (include Hotspots), Send Slack DM to code author
 
-It is an application that sends notifications to Slack when a code smell occurs in SonarQube.
+It is an application that sends notifications to Slack when a code smell or hotspot occurs in SonarQube.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ It is an application that sends notifications to Slack when a code smell occurs 
 
 * execute api
     ```
-      curl -X POST 'http://localhost:8080/sonarqube/codesmell/alert'
+      curl -X POST 'http://localhost:8080/sonarqube/quality/alert'
     ```
 
 ## output snapshot

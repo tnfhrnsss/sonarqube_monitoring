@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SonarQubeMonitorController {
     private final SonarQubeMonitorFlowService sonarQubeMonitorFlowService;
 
-    @PostMapping("codesmell/alert")
+    @PostMapping("quality/alert")
     public void alert() {
         sonarQubeMonitorFlowService.alert();
     }

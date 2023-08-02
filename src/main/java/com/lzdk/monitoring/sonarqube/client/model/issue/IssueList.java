@@ -1,4 +1,4 @@
-package com.lzdk.monitoring.sonarqube.client.model;
+package com.lzdk.monitoring.sonarqube.client.model.issue;
 
 import java.util.ArrayList;
 import java.util.Collection;

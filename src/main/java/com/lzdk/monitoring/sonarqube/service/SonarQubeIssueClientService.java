@@ -2,9 +2,9 @@ package com.lzdk.monitoring.sonarqube.service;
 
 import java.util.Arrays;
 
-import com.lzdk.monitoring.sonarqube.client.SonarQubeClient;
-import com.lzdk.monitoring.sonarqube.client.model.SearchQuery;
-import com.lzdk.monitoring.sonarqube.client.model.SearchResultRdo;
+import com.lzdk.monitoring.sonarqube.client.SonarQubeIssueClient;
+import com.lzdk.monitoring.sonarqube.client.model.issue.IssueSearchQuery;
+import com.lzdk.monitoring.sonarqube.client.model.issue.IssueSearchResultRdo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,27 +14,27 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SonarQubeClientService {
-    private final SonarQubeClient sonarQubeClient;
+public class SonarQubeIssueClientService {
+    private final SonarQubeIssueClient sonarQubeIssueClient;
 
     @Value("${monitoring.sonarqube.component.keys:}")
     private String componentKeys;
 
-    public SearchResultRdo findAllIssues() {
+    public IssueSearchResultRdo findAll() {
         if (validate()) {
-            return SearchResultRdo.EMPTY();
+            return IssueSearchResultRdo.EMPTY();
         }
 
-        SearchResultRdo rdo = search(1);
+        IssueSearchResultRdo rdo = search(1);
         for (int i=1; i < rdo.maxPage(); i++) {
             rdo.getIssues().addAll(search(i).getIssues());
         }
         return rdo;
     }
 
-    private SearchResultRdo search(int page) {
-        return sonarQubeClient.search(
-            SearchQuery.builder()
+    private IssueSearchResultRdo search(int page) {
+        return sonarQubeIssueClient.search(
+            IssueSearchQuery.builder()
                 .componentKeys(componentKeys)
                 .p(page)
                 .facets(Arrays.asList("severities", "types"))

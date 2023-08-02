@@ -1,4 +1,4 @@
-package com.lzdk.monitoring.sonarqube.client.model;
+package com.lzdk.monitoring.sonarqube.client.model.issue;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lzdk.monitoring.utils.json.JsonSerializable;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SearchResultRdo implements JsonSerializable {
+public class IssueSearchResultRdo implements JsonSerializable {
     private int total;
 
     private int p;
@@ -20,8 +20,8 @@ public class SearchResultRdo implements JsonSerializable {
     private IssueList issues;
 
     @JsonIgnore
-    public static SearchResultRdo EMPTY() {
-        return new SearchResultRdo();
+    public static IssueSearchResultRdo EMPTY() {
+        return new IssueSearchResultRdo();
     }
 
     @JsonIgnore

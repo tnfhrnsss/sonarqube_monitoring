@@ -5,8 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.lzdk.monitoring.slack.message.service.SlackSendMessageService;
 import com.lzdk.monitoring.slack.user.service.SlackUserInfoService;
+import com.lzdk.monitoring.sonarqube.author.sdo.AuthorSdo;
 import com.lzdk.monitoring.sonarqube.author.service.SonarQubeAuthorService;
-import com.lzdk.monitoring.sonarqube.client.model.SearchResultRdo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SonarQubeMonitorFlowService {
-    private final SonarQubeClientService sonarQubeClientService;
+    private final SonarQubeIssueClientService sonarQubeIssueClientService;
+
+    private final SonarQubeHotspotClientService sonarQubeHotspotClientService;
 
     private final SlackSendMessageService slackSendMessageService;
 
@@ -28,6 +30,7 @@ public class SonarQubeMonitorFlowService {
     public void alert() {
         try {
             findIssue();
+            findHotspot();
             sendMessage();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -36,10 +39,14 @@ public class SonarQubeMonitorFlowService {
         }
     }
 
+    private void findHotspot() {
+        sonarQubeHotspotClientService.findAll()
+            .forEach(hotspot -> sonarQubeAuthorService.enroll(AuthorSdo.create(hotspot.getProject(), hotspot.getAuthor())));
+    }
+
     private void findIssue() {
-        SearchResultRdo resultRdo = sonarQubeClientService.findAllIssues();
-        log.debug(resultRdo.toString());
-        resultRdo.getIssues().forEach(issue -> sonarQubeAuthorService.enroll(issue));
+        sonarQubeIssueClientService.findAll()
+            .getIssues().forEach(issue -> sonarQubeAuthorService.enroll(AuthorSdo.create(issue.getProject(), issue.getAuthor())));
     }
 
     private void sendMessage() {
