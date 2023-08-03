@@ -28,7 +28,7 @@ public class IssueSearchQuery implements JsonSerializable {
     private boolean resolved = false;
 
     @Builder.Default
-    private String types = "CODE_SMELL";
+    private String types = "CODE_SMELL,BUG";
 
     @Builder.Default
     private List<String> facets = Collections.emptyList();
