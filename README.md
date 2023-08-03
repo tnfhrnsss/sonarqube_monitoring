@@ -28,9 +28,14 @@ It is an application that sends notifications to Slack when a code smell or hots
     admin.id: "@admin"
   ```
 
-* run application
-    * build this project and run SonarqubeMonitoringApplication.class
-    * [OR] java -jar sonarqube_monitoring*.jar
+  * run application
+      * build this project and run SonarqubeMonitoringApplication.class
+      * [OR] java -jar sonarqube_monitoring*.jar
+  * [OR] you can use spring schedule. you just set the job time.
+    ```
+       jobs:
+         cronSchedule: "0 0 9 * * 1-5"
+    ```
 
 * execute api
     ```

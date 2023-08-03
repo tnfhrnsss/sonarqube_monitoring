@@ -10,6 +10,7 @@ import com.lzdk.monitoring.sonarqube.author.service.SonarQubeAuthorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class SonarQubeMonitorFlowService {
     private final SlackUserInfoService slackUserInfoService;
 
     @Async("taskExecutor")
+    @Scheduled(cron = "${jobs.cronSchedule:-}")
     public void alert() {
         try {
             findIssue();
@@ -56,7 +58,7 @@ public class SonarQubeMonitorFlowService {
         try {
             targets.forEach((k, v) -> {
             if (slackUserProfiles.containsKey(k)) {
-                slackSendMessageService.send(slackUserProfiles.get(k).toString(), v.getMap().keySet());
+                slackSendMessageService.send(slackUserProfiles.get(k), v.getMap().keySet());
             } else {
                 slackSendMessageService.sendToAdmin(v.getMap().keySet());
             }});
