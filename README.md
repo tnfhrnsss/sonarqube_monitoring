@@ -31,15 +31,14 @@ It is an application that sends notifications to Slack when a code smell or hots
   * run application
       * build this project and run SonarqubeMonitoringApplication.class
       * [OR] java -jar sonarqube_monitoring*.jar
+      * execute api
+        ```
+          curl -X POST 'http://localhost:8080/sonarqube/quality/alert'
+        ```
   * [OR] you can use spring schedule. you just set the job time.
     ```
        jobs:
          cronSchedule: "0 0 9 * * 1-5"
-    ```
-
-* execute api
-    ```
-      curl -X POST 'http://localhost:8080/sonarqube/quality/alert'
     ```
 
 ## output snapshot
