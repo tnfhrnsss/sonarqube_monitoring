@@ -15,7 +15,9 @@ It is an application that sends notifications to Slack when a code smell or hots
    ```
     monitoring:
       sonarqube:
-        api.url: http://127.0.0.1:9100/api
+        consoleUrl:
+        apiUrl: http://127.0.0.1:9100/api
+        componentKeys:
       slack:
         token: xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
         channel:
