@@ -33,6 +33,6 @@ public class SonarqubeProperties {
     }
 
     public String getComponents() {
-        return this.getComponentKeys().stream().collect(Collectors.joining());
+        return this.getComponentKeys().stream().collect(Collectors.joining(","));
     }
 }
