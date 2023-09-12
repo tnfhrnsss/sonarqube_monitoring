@@ -5,11 +5,11 @@ import java.util.Arrays;
 import com.lzdk.monitoring.sonarqube.client.SonarQubeIssueClient;
 import com.lzdk.monitoring.sonarqube.client.model.issue.IssueSearchQuery;
 import com.lzdk.monitoring.sonarqube.client.model.issue.IssueSearchResultRdo;
+import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 public class SonarQubeIssueClientService {
     private final SonarQubeIssueClient sonarQubeIssueClient;
 
-    @Value("${monitoring.sonarqube.component.keys:}")
-    private String componentKeys;
+    private final SonarqubeProperties sonarqubeProperties;
 
     public IssueSearchResultRdo findAll() {
         if (validate()) {
@@ -35,7 +34,7 @@ public class SonarQubeIssueClientService {
     private IssueSearchResultRdo search(int page) {
         return sonarQubeIssueClient.search(
             IssueSearchQuery.builder()
-                .componentKeys(componentKeys)
+                .componentKeys(sonarqubeProperties.getComponents())
                 .p(page)
                 .facets(Arrays.asList("severities", "types"))
                 .build()
@@ -43,6 +42,6 @@ public class SonarQubeIssueClientService {
     }
 
     private boolean validate() {
-        return StringUtils.isEmpty(componentKeys);
+        return CollectionUtils.isEmpty(sonarqubeProperties.getComponentKeys());
     }
 }

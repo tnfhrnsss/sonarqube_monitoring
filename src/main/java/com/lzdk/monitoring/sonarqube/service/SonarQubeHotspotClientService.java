@@ -6,6 +6,7 @@ import com.lzdk.monitoring.sonarqube.client.SonarQubeHotspotClient;
 import com.lzdk.monitoring.sonarqube.client.model.hotspot.HotspotList;
 import com.lzdk.monitoring.sonarqube.client.model.hotspot.HotspotSearchQuery;
 import com.lzdk.monitoring.sonarqube.client.model.hotspot.HotspotSearchResultRdo;
+import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,14 +18,13 @@ import org.springframework.stereotype.Service;
 public class SonarQubeHotspotClientService {
     private final SonarQubeHotspotClient sonarQubeHotspotClient;
 
-    @Value("${monitoring.sonarqube.component.keys:}")
-    private List<String> componentKeys;
+    private final SonarqubeProperties sonarqubeProperties;
 
     public HotspotList findAll() {
         HotspotList combineList = new HotspotList();
         try {
             HotspotSearchQuery.HotspotSearchQueryBuilder builder = HotspotSearchQuery.builder().build().toBuilder();
-            componentKeys.forEach(
+            sonarqubeProperties.getComponentKeys().forEach(
                 key -> {
                     HotspotSearchResultRdo rdo = sonarQubeHotspotClient.search(builder.projectKey(key).build());
                     if (rdo.exist()) {

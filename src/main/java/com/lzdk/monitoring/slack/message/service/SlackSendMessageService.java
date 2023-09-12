@@ -2,7 +2,10 @@ package com.lzdk.monitoring.slack.message.service;
 
 import java.io.IOException;
 
+import com.lzdk.monitoring.slack.message.domain.Block;
+import com.lzdk.monitoring.slack.message.domain.BlockList;
 import com.lzdk.monitoring.slack.utils.SlackApiConfig;
+import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ public class SlackSendMessageService {
     @Value("${monitoring.slack.admin.id:}")
     private String adminId;
 
+    private final SonarqubeProperties sonarqubeProperties;
+
     private static final String PUSH_MESSAGE = "Code smells or Hotspots have been detected in SonarQube. Please fix them. component : ";
 
     static void publishMessage(String channelId, String message) {
@@ -26,7 +31,7 @@ public class SlackSendMessageService {
             var result = client.chatPostMessage(r -> r
                 .token(SlackApiConfig.getToken())
                 .channel(channelId)
-                .text(StringUtils.join(PUSH_MESSAGE, message))
+                .blocksAsString(message)
             );
             log.info("result {}", result);
         } catch (IOException | SlackApiException e) {
@@ -35,14 +40,21 @@ public class SlackSendMessageService {
     }
 
     public void send(String targetId, Object componentKey) {
-        publishMessage(targetId, componentKey.toString());
+        publishMessage(targetId, makeBlocks(componentKey.toString()));
     }
 
     public void sendToAdmin(Object componentKey) {
         if (StringUtils.isEmpty(adminId)) {
             log.debug("Author not found in the Slack channel. : {} ", componentKey.toString());
         } else {
-            publishMessage(adminId, componentKey.toString());
+            publishMessage(adminId, makeBlocks(componentKey.toString()));
         }
+    }
+
+    private String makeBlocks(String componentKey) {
+        BlockList blocks = BlockList.create(
+            Block.createMarkdown(StringUtils.join(PUSH_MESSAGE, componentKey), sonarqubeProperties.getConsoleUrl())
+        );
+        return blocks.toJson();
     }
 }

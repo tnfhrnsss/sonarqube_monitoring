@@ -12,8 +12,9 @@ jobs:
 
 monitoring:
   sonarqube:
-    api.url:
-    component.keys:
+    consoleUrl:
+    apiUrl:
+    componentKeys:
   slack:
     token:
     channel:

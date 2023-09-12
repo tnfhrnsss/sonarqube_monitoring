@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
     contextId = "com.lzdk.monitoring.sonarqube.client.SonarQubeIssueClient",
-    url = "${monitoring.sonarqube.api.url}",
+    url = "${monitoring.sonarqube.apiUrl}",
     name = "sonarqube",
     configuration = {FeignConfiguration.class, FeignRetryConfiguration.class, FeignLoggerLevelConfiguration.class},
     primary = false
