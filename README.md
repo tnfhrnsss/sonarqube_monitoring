@@ -11,20 +11,24 @@ It is an application that sends notifications to Slack when a code smell or hots
 # Usage
 
 * You can configure the sonarqube api url and Slack details in the application.yml file.
-* You only need to set either the Channel ID or the Channel Name.
-   ```
-    monitoring:
-      sonarqube:
-        consoleUrl:
-        apiUrl: http://127.0.0.1:9100/api
-        componentKeys:
-      slack:
-        token: xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        channel:
-          id:
-          name:
-        admin.id:
-    ```
+  * You cna choose delivery method. (default : dm)
+  * You only need to set either the Channel ID or the Channel Name.
+     ```
+      monitoring:
+        sonarqube:
+          consoleUrl:
+          apiUrl: http://127.0.0.1:9100/api
+          componentKeys:
+        slack:
+          token: xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          delivery:
+            method: dm # dm or mention
+            message:
+          channel:
+            id:
+            name:
+          admin.id:
+      ```
 * When a matching user does not exist in the Slack channel, it can be configured to send a direct message to the admin.
   ```
     admin.id: "@admin"

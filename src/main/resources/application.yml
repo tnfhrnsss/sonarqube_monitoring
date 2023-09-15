@@ -17,6 +17,9 @@ monitoring:
     componentKeys:
   slack:
     token:
+    delivery:
+      method: dm # dm or mention
+      message: "Code smells or Hotspots have been detected in SonarQube. Please fix them. component :"
     channel:
       id:
       name:

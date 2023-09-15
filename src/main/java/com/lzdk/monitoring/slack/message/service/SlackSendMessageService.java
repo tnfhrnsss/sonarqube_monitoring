@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.lzdk.monitoring.slack.message.domain.Block;
 import com.lzdk.monitoring.slack.message.domain.BlockList;
-import com.lzdk.monitoring.slack.utils.SlackApiConfig;
+import com.lzdk.monitoring.slack.utils.SlackProperties;
 import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
@@ -23,13 +23,11 @@ public class SlackSendMessageService {
 
     private final SonarqubeProperties sonarqubeProperties;
 
-    private static final String PUSH_MESSAGE = "Code smells or Hotspots have been detected in SonarQube. Please fix them. component : ";
-
     static void publishMessage(String channelId, String message) {
         var client = Slack.getInstance().methods();
         try {
             var result = client.chatPostMessage(r -> r
-                .token(SlackApiConfig.getToken())
+                .token(SlackProperties.getToken())
                 .channel(channelId)
                 .blocksAsString(message)
             );
@@ -40,7 +38,11 @@ public class SlackSendMessageService {
     }
 
     public void send(String targetId, Object componentKey) {
-        publishMessage(targetId, makeBlocks(componentKey.toString()));
+        if (SlackProperties.canUseDm()) {
+            publishMessage(targetId, makeBlocks(componentKey.toString()));
+        } else {
+            publishMessage(SlackProperties.getChannelId(), makeMentionBlocks(targetId, componentKey.toString()));
+        }
     }
 
     public void sendToAdmin(Object componentKey) {
@@ -53,7 +55,14 @@ public class SlackSendMessageService {
 
     private String makeBlocks(String componentKey) {
         BlockList blocks = BlockList.create(
-            Block.createMarkdown(StringUtils.join(PUSH_MESSAGE, componentKey), sonarqubeProperties.getConsoleUrl())
+            Block.createMarkdown(StringUtils.join(SlackProperties.getDeliveryMessage(), componentKey), sonarqubeProperties.getConsoleUrl())
+        );
+        return blocks.toJson();
+    }
+
+    private String makeMentionBlocks(String mentionId, String componentKey) {
+        BlockList blocks = BlockList.create(
+            Block.createMarkdown(StringUtils.join("<@" + mentionId + "> ", SlackProperties.getDeliveryMessage(), componentKey), sonarqubeProperties.getConsoleUrl())
         );
         return blocks.toJson();
     }
