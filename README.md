@@ -48,7 +48,12 @@ It is an application that sends notifications to Slack when a code smell or hots
     ```
 
 ## output snapshot
-![slack_notification](https://tnfhrnsss.github.io/docs/sub-projects/img/sonarqube_codesmell_slack_notification.png)
+* dm
+![slack_notification_dm](https://tnfhrnsss.github.io/docs/sub-projects/img/sonarqube_dm_alert.png)
+
+* mention
+![slack_notification_mention](https://tnfhrnsss.github.io/docs/sub-projects/img/sonarqube_mention_alert.png)
+
 
 ### blog reference
 
