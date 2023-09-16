@@ -54,17 +54,7 @@ public class SonarQubeMonitorFlowService {
     private void sendMessage() {
         Map<String, ConcurrentHashMap.KeySetView> targets = sonarQubeAuthorService.findAll();
         Map<String, String> slackUserProfiles = slackUserInfoService.findAll();
-
-        try {
-            targets.forEach((k, v) -> {
-            if (slackUserProfiles.containsKey(k)) {
-                slackSendMessageService.send(slackUserProfiles.get(k), v.getMap().keySet());
-            } else {
-                slackSendMessageService.sendToAdmin(v.getMap().keySet());
-            }});
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        slackSendMessageService.message(targets, slackUserProfiles);
     }
 
     private void destroy() {
