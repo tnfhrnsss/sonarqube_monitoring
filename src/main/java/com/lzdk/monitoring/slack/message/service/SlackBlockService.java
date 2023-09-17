@@ -1,10 +1,12 @@
 package com.lzdk.monitoring.slack.message.service;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.lzdk.monitoring.slack.message.domain.BlockList;
 import com.lzdk.monitoring.slack.message.domain.DmBlock;
 import com.lzdk.monitoring.slack.message.domain.HeaderBlock;
+import com.lzdk.monitoring.slack.message.domain.MarkdownBlock;
 import com.lzdk.monitoring.slack.message.domain.MentionBlock;
 import com.lzdk.monitoring.slack.utils.SlackProperties;
 import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
@@ -30,6 +32,17 @@ public class SlackBlockService {
         BlockList blockList = BlockList.addHeader(HeaderBlock.create(SlackProperties.getDeliveryMessage()));
         blockList.addMentionBlock(
             MentionBlock.create(targets, sonarqubeProperties.getConsoleUrl())
+        );
+        return blockList.toJson();
+    }
+
+    public String makeChannelBlocks(Map<String, Map> targets) {
+        BlockList blockList = BlockList.addHeader(HeaderBlock.create(SlackProperties.getDeliveryMessage()));
+        blockList.addChannelBlock(
+            targets.entrySet()
+                .stream()
+                .map(k -> MarkdownBlock.create("<@" + k.getKey() + "> " + k.getValue().keySet()))
+                .collect(Collectors.toList())
         );
         return blockList.toJson();
     }

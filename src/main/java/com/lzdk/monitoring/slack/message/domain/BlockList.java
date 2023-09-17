@@ -1,6 +1,7 @@
 package com.lzdk.monitoring.slack.message.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.lzdk.monitoring.utils.json.JsonSerializable;
 import lombok.AccessLevel;
@@ -22,6 +23,10 @@ public class BlockList extends ArrayList implements JsonSerializable {
 
     public void addMentionBlock(MentionBlock block) {
         this.add(block);
+    }
+
+    public void addChannelBlock(List blocks) {
+        blocks.forEach(b -> this.add(b));
     }
 
     public void addDmBlock(DmBlock block) {

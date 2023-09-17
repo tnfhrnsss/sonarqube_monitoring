@@ -30,7 +30,7 @@ public class SlackSendMessageService {
                     slackMessageService.publish(k.getKey(), slackBlockService.makeDmBlock(k.getValue().toString()));
                 });
         } else {
-            slackMessageService.publish(SlackProperties.getChannelId(), slackBlockService.makeMentionBlocks(targets));
+            slackMessageService.publish(SlackProperties.getChannelId(), slackBlockService.makeChannelBlocks(targets));
         }
     }
 
