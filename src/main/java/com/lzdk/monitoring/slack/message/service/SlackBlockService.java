@@ -38,6 +38,7 @@ public class SlackBlockService {
 
     public String makeChannelBlocks(Map<String, Map> targets) {
         BlockList blockList = BlockList.addHeader(HeaderBlock.create(SlackProperties.getDeliveryMessage()));
+        blockList.addDmBlock(DmBlock.create("Please check your code.", sonarqubeProperties.getConsoleUrl()));
         blockList.addChannelBlock(
             targets.entrySet()
                 .stream()
