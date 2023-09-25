@@ -28,7 +28,7 @@ public class SonarQubeMonitorFlowService {
     private final SlackUserInfoService slackUserInfoService;
 
     @Async("taskExecutor")
-    @Scheduled(cron = "${jobs.cronSchedule:-}")
+    @Scheduled(cron = "${jobs.cronSchedule:}")
     public void alert() {
         try {
             findIssue();
