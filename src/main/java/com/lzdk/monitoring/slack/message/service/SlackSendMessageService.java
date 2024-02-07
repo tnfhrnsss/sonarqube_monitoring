@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.lzdk.monitoring.slack.utils.SlackProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -16,9 +14,6 @@ import org.springframework.util.CollectionUtils;
 @Service
 @RequiredArgsConstructor
 public class SlackSendMessageService {
-    @Value("${monitoring.slack.admin.id:}")
-    private String adminId;
-
     private final SlackMessageService slackMessageService;
 
     private final SlackBlockService slackBlockService;
@@ -26,19 +21,9 @@ public class SlackSendMessageService {
     private void send(Map<String, Map> targets) {
         if (SlackProperties.canUseDm()) {
             targets.entrySet()
-                .forEach(k -> {
-                    slackMessageService.publish(k.getKey(), slackBlockService.makeDmBlock(k.getValue().toString()));
-                });
+                .forEach(k -> slackMessageService.publish(k.getKey(), slackBlockService.makeDmBlock(k.getValue().toString())));
         } else {
             slackMessageService.publish(SlackProperties.getChannelId(), slackBlockService.makeChannelBlocks(targets));
-        }
-    }
-
-    private void sendToAdmin(Object componentKey) {
-        if (StringUtils.isEmpty(adminId)) {
-            log.debug("Author not found in the Slack channel. : {} ", componentKey.toString());
-        } else {
-            slackMessageService.publish(adminId, slackBlockService.makeDmBlock(componentKey.toString()));
         }
     }
 
@@ -50,7 +35,7 @@ public class SlackSendMessageService {
                 if (slackUserProfiles.containsKey(k)) {
                     sendTargets.put(slackUserProfiles.get(k), v.getMap().keySet().getMap());
                 } else {
-                    sendToAdmin(v.getMap().keySet());
+                    sendTargets.put(k, v.getMap().keySet().getMap());
                 }});
 
             if (!CollectionUtils.isEmpty(sendTargets)) {

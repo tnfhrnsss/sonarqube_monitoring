@@ -23,7 +23,6 @@ monitoring:
     channel:
       id:
       name:
-    admin.id: # ex) "@jj"
 
 logging:
   level:
