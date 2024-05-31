@@ -33,6 +33,7 @@ public class SonarQubeMonitorFlowService {
         try {
             findIssue();
             findHotspot();
+            findAllSlackUser();
             sendMessage();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -51,10 +52,13 @@ public class SonarQubeMonitorFlowService {
             .getIssues().forEach(issue -> sonarQubeAuthorService.enroll(AuthorSdo.create(issue.getProject(), issue.getAuthor())));
     }
 
+    private void findAllSlackUser() {
+        slackUserInfoService.findAll();
+    }
+
     private void sendMessage() {
         Map<String, ConcurrentHashMap.KeySetView> targets = sonarQubeAuthorService.findAll();
-        Map<String, String> slackUserProfiles = slackUserInfoService.findAll();
-        slackSendMessageService.message(targets, slackUserProfiles);
+        slackSendMessageService.message(targets);
     }
 
     private void destroy() {

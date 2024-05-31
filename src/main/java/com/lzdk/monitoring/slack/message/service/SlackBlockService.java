@@ -1,6 +1,7 @@
 package com.lzdk.monitoring.slack.message.service;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.lzdk.monitoring.slack.message.domain.BlockList;
@@ -12,6 +13,7 @@ import com.lzdk.monitoring.slack.utils.SlackProperties;
 import com.lzdk.monitoring.sonarqube.utils.SonarqubeProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -42,9 +44,17 @@ public class SlackBlockService {
         blockList.addChannelBlock(
             targets.entrySet()
                 .stream()
-                .map(k -> MarkdownBlock.create("<@" + k.getKey() + "> " + k.getValue().keySet()))
+                .map(k -> MarkdownBlock.create(enrichmentMessage(k.getKey(), k.getValue().keySet())))
                 .collect(Collectors.toList())
         );
         return blockList.toJson();
+    }
+
+    private String enrichmentMessage(String userId, Set set) {
+        String message = set.toString();
+        if (StringUtils.isNotEmpty(userId)) {
+            return StringUtils.join("<@", userId, ">", " ", message);
+        }
+        return message;
     }
 }

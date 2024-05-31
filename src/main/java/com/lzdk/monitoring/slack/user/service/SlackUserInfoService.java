@@ -50,4 +50,8 @@ public class SlackUserInfoService {
         List<String> users = slackUserService.findAll(channelId);
         return findAll(users);
     }
+
+    public Map<String, String> getUserProfiles() {
+        return profiles;
+    }
 }
